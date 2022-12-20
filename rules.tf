@@ -57,6 +57,9 @@ variable "rules" {
     elasticsearch-java-tcp = [9300, 9300, "tcp", "Elasticsearch Java interface"]
     # Grafana
     grafana-tcp = [3000, 3000, "tcp", "Grafana Dashboard"]
+    loki          = [3100, 3100, "tcp", "Grafana Loki enpoint"]
+    loki-grpc     = [9096, 9096, "tcp", "Grafana Loki GRPC"]
+    loki-promtail = [9200, 9200, "tcp", "Promtail endpoint"]
     # Graphite Statsd
     graphite-webui    = [80, 80, "tcp", "Graphite admin interface"]
     graphite-2003-tcp = [2003, 2003, "tcp", "Carbon receiver plain text"]
@@ -94,6 +97,10 @@ variable "rules" {
     ldap-tcp = [389, 389, "tcp", "LDAP"]
     # LDAPS
     ldaps-tcp = [636, 636, "tcp", "LDAPS"]
+    # Loki
+    loki          = [3100, 3100, "tcp", "Grafana Loki enpoint"]
+    loki-grpc     = [9096, 9096, "tcp", "Grafana Loki GRPC"]
+    loki-promtail = [9200, 9200, "tcp", "Promtail endpoint"]
     # Logstash
     logstash-tcp = [5044, 5044, "tcp", "Logstash"]
     # Memcached
@@ -128,9 +135,10 @@ variable "rules" {
     puppet-tcp   = [8140, 8140, "tcp", "Puppet"]
     puppetdb-tcp = [8081, 8081, "tcp", "PuppetDB"]
     # Prometheus
-    prometheus-http-tcp               = [9090, 9090, "tcp", "Prometheus"]
-    prometheus-pushgateway-http-tcp   = [9091, 9091, "tcp", "Prometheus Pushgateway"]
+    prometheus-http-tcp             = [9090, 9090, "tcp", "Prometheus"]
+    prometheus-pushgateway-http-tcp = [9091, 9091, "tcp", "Prometheus Pushgateway"]
     prometheus-node-exporter-http-tcp = [9100, 9100, "tcp", "Prometheus Node Exporter"]
+    prometheus-promtail = [9200, 9200, "tcp", "Promtail endpoint"]
     # Oracle Database
     oracle-db-tcp = [1521, 1521, "tcp", "Oracle"]
     # Octopus Tentacles
@@ -271,6 +279,11 @@ variable "auto_groups" {
       ingress_with_self = ["all-all"]
       egress_rules      = ["all-all"]
     }
+    loki = {
+      ingress_rules     = ["loki", "loki-grpc", "loki-promtail"]
+      ingress_with_self = ["all-all"]
+      egress_rules      = ["all-all"]
+    }
     graphite-statsd = {
       ingress_rules     = ["graphite-webui", "graphite-2003-tcp", "graphite-2004-tcp", "graphite-2023-tcp", "graphite-2024-tcp", "graphite-8080-tcp", "graphite-8125-tcp", "graphite-8125-udp", "graphite-8126-tcp"]
       ingress_with_self = ["all-all"]
@@ -397,7 +410,7 @@ variable "auto_groups" {
       egress_rules      = ["all-all"]
     }
     prometheus = {
-      ingress_rules     = ["prometheus-http-tcp", "prometheus-pushgateway-http-tcp", "prometheus-node-exporter-http-tcp"]
+      ingress_rules     = ["prometheus-http-tcp", "prometheus-pushgateway-http-tcp", "prometheus-node-exporter-http-tcp", "prometheus-promtail"]
       ingress_with_self = ["all-all"]
       egress_rules      = ["all-all"]
     }
