@@ -6,7 +6,7 @@
 variable "auto_ingress_rules" {
   description = "List of ingress rules to add automatically"
   type        = list(string)
-  default     = ["prometheus-http-tcp", "prometheus-pushgateway-http-tcp", "prometheus-node-exporter-http-tcp", "prometheus-promtail"]
+  default     = ["loki", "loki-grpc", "loki-promtail"]
 }
 
 variable "auto_ingress_with_self" {
